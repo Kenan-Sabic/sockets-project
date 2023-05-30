@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat Application</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    #messages {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #messages li {
+      margin-bottom: 10px;
+    }
+
+    #messageForm input[type="text"] {
+      width: 80%;
+      padding: 5px;
+      font-size: 16px;
+    }
+
+    #messageForm button {
+      width: 20%;
+      padding: 5px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Real-time Chat</h1>
+
+  <ul id="messages"></ul>
+
+  <form id="messageForm">
+    <input type="text" id="message" autocomplete="off" placeholder="Type your message..." />
+    <button>Send</button>
+  </form>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    // Event listener for receiving chat messages
+    socket.on('chat message', (message) => {
+  const li = document.createElement('li');
+  li.textContent = `${message.user}: ${message.text}`;
+  messages.appendChild(li);
+});
+    // Event listener for receiving user ID
+    socket.on('user connected', (userId) => {
+      // You can use the user ID for any custom logic or display
+      console.log('User connected:', userId);
+    });
+
+    // Event listener for form submission
+    const form = document.getElementById('messageForm');
+    const input = document.getElementById('message');
+    const messages = document.getElementById('messages');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const message = input.value.trim();
+      if (message) {
+        const userId = getUserId(); // You need to implement a function to retrieve the user ID
+        socket.emit('chat message', { userId, message });
+        input.value = '';
+      }
+    });
+
+    // Function to retrieve the user ID of the current client
+    function getUserId() {
+      // You can implement your own logic to get the user ID (e.g., from cookies or local storage)
+      // For now, let's generate a random alphanumeric string as the user ID
+      return Math.random().toString(36).substr(2, 9);
+    }
+  </script>
+</body>
+</html>

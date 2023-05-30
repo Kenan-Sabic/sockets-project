@@ -1,0 +1,15 @@
+{
+  "name": "sockets-project",
+  "version": "1.0.0",
+  "description": "Small project learning to use socket.io ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kenan Sabic",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1"
+  }
+}
